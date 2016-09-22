@@ -91,7 +91,7 @@ while ($count < $rowlength){
 	}
 	my $rule = ($collength - $freq);
 	if ($rule/$collength < 0.8){
-		$R->run("myFile <- data.frame(myFile[-$count, ])");
+		$R->run("myFile <- data.frame(myFile[!rownames(myFile) %in% $row, ])");
 		print $row;
 	}
 	$count ++;
