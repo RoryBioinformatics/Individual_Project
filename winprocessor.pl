@@ -96,7 +96,7 @@ foreach (@k) {
 close TXT;
 
 # Creates a peak intensity file
-system "touch $filename.peak.txt";
+system "fsutil file createnew $filename.peak.txt 0";
 
 # Opens the peak file for writing
 open (PEAK, ">$filename.peak.txt") or die ("Cannot Open Writing (.peak.txt) File.");
