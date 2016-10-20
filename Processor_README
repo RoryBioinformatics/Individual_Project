@@ -1,0 +1,62 @@
+Processor.pl README
+--------------------------------------------------------------------------
+Processor.pl is a script used to find and print peaks of mass spectrometry data from a mzXML file into
+an accessible .txt file type. It can be used in the targeted profiling of MS data to identify individual 
+peak intensities and provide comparative ratios, useful in the investigation of compound quantitation.
+
+There are currently three formats of the Processor.pl script. They are two with alternate operating system 
+requirements (windows and linux) and a third with an inbuilt GUI. Winprocessor.pl is a windows-based version,
+processor.pl is a linux version, and pro_gui.pl is a linux based version with a simple gui.
+
+All versions of processor.pl are designed to be used in conjunction with a skilled operator with a knowledge of 
+the mass spectrometry data processed. Whilst the program is relatively accurate in its' output, some further editing
+of data may be required. 
+
+Tool Requirements
+--------------------------------------------------------------------------
+
+
+Directions for use
+--------------------------------------------------------------------------
+	Winprocessor/Processor.pl
+	-------------------------
+	To Access the processor.pl script, first open a terminal/command prompt.
+	Direct the terminal window to the desired directory (using "ls directoryname/" command).
+	Copy the processor.pl file into the directory.
+	Change the file permissions to allow script execution via the command "chmod 755 processor.pl"
+	Open a new terminal/command prompt and redirect to the desired directory.
+	Use the command "perl Processor.pl filename", where filename is the name of the file to be processed.
+	The program will prompt the user for four inputs:
+
+		An intensity cutoff-
+
+		A minimum M/Z range-
+
+		A maximum M/Z range-
+
+		A minimum M/Z peak distance-
+
+
+	pro_gui.pl
+	----------
+	
+
+Tool Outputs
+--------------------------------------------------------------------------
+There are two outputted file formats from the script.
+The first is a .txt file, which contains the converted scan number, msLevel,
+m/z ratio and peak intensity for 
+
+Tool Error Messages
+--------------------------------------------------------------------------
+
+Contacts
+--------------------------------------------------------------------------
+If there is an error not reported above or if you have a query about the script, 
+please contact the script designer at:
+
+rorycunnison@yahoo.co.uk
+
+or via the github account handle:
+
+RoryBioinformatics
