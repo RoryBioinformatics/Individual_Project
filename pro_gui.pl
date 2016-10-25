@@ -6,18 +6,22 @@ use Tk;
 
 # Processor.pl GUI
 ############################################################
+
 my $mw = new MainWindow;
 my @files;
 my $minimum;
 my $maximum;
 my $intensity;
 my $dist;
+my $dir = system "pwd";
+my $file2;
 
 # File entry frame
 my $frame_top = $mw -> Frame();
 my $lab = $frame_top -> Label(-text=>"Find your file:   ");
-my $ent = $frame_top -> Entry(-width=>60);
+my $ent = $frame_top -> Entry(-width=>60, -text=>"$file2");
 my $but = $frame_top -> Button(-text=>"Submit file", -command =>\&push_button);
+my $but2 = $frame_top -> Button(-text=>"Choose file", -command =>\&file_list);
 
 # Parameter setting frame
 my $frame_middle = $mw -> Frame();
@@ -41,15 +45,16 @@ my $srl_y = $frame_bottom -> Scrollbar(-orient=>'v');
 my $srl_x = $frame_bottom -> Scrollbar(-orient=>'h');
 my $lab_txt = $frame_bottom -> Label(-text=>"Added Files:");
 my $but_submit = $frame_bottom -> Button(-text=>"Submit",-command =>\&param_entry);
-my $but_quit = $frame_bottom -> Button(-text=>"Quit",-command => sub { exit });
+#my $but_quit = $frame_bottom -> Button(-text=>"Quit",-command => sub { exit });
 $txt -> configure(-yscrollcommand=>['set', $srl_y],
         -xscrollcommand=>['set',$srl_x]);
 
 # Grid for widget positioning
 $lab -> grid(-row=>1,-column=>1);
 $ent -> grid(-row=>1,-column=>2);
-$but -> grid(-row=>1,-column=>3);
-$frame_top -> grid(-row=>1,-column=>1,-columnspan=>3);
+$but -> grid(-row=>1,-column=>4);
+$but2 -> grid(-row=>1,-column=>3);
+$frame_top -> grid(-row=>1,-column=>1,-columnspan=>4);
 
 $lab_dist -> grid(-row=>2,-column=>1);
 $ent_dist -> grid(-row=>2,-column=>2);
@@ -70,8 +75,7 @@ $txt -> grid(-row=>2,-column=>1);
 $srl_y -> grid(-row=>2,-column=>2,-sticky=>"ns");
 $srl_x -> grid(-row=>3,-column=>1,-sticky=>"ew");
 $but_submit -> grid(-row=>4,-column=>1);
-$but_quit -> grid(-row=>4,-column=>2);
-$frame_bottom -> grid(-row=>3,-column=>1,-columnspan=>2);
+$frame_bottom -> grid(-row=>3,-column=>1,-columnspan=>4);
 
 MainLoop;
 
@@ -79,8 +83,16 @@ MainLoop;
 
 sub push_button {
 	my $file = $ent -> get();
-	push (@files, $file);
+	push (@files, $file2);
 	$txt -> insert('end',"$file\n");
+	print @files;
+	$ent -> delete(0,'end');
+}
+
+sub file_list {
+	my $FSref = $mw->FileSelect();
+	$file2 = $FSref->Show;
+	$ent -> insert('end',"$file2");
 }
 
 sub param_entry {
@@ -89,27 +101,33 @@ sub param_entry {
 	$intensity = $ent_cutoff -> get();
 	$dist = $ent_dist -> get();
 
-
 # Processor.pl script below
 #################################################################
 #################################################################
 
 
 # Handle input file and store in a scalar.
-#my @files = @ARGV;
 my $filesorter = join (" ",@files);
 chomp $filesorter;
 @files = split (" ",$filesorter);
 foreach (@files){
 my $infile = $_;
 my $filename;
-print "$infile ";
+print "$infile \n";
 
 # Creates time recording for file
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 $year += 1900;
 $mon += 1;
 print "$mday/$mon/$year $hour:$min:$sec\n";
+
+# Takes file name from location 
+my @splitter = split("/",$infile);
+$infile = pop @splitter;
+#unshift (@splitter,"~");
+my $location = join ("/",@splitter);
+print "@splitter\n";
+print "$infile\n";
 
 # Removes $infile file ending
 if ($infile =~ m/(\w+.)\w+/){
@@ -118,7 +136,9 @@ if ($infile =~ m/(\w+.)\w+/){
 	pop @list;
 	$filename = join ("", @list);
 }
-
+print "YOU ARE HERE $location\n";
+system "cd";
+system "cd $location";
 # System call to read mzXML file and put into a new file
 system "mscat $filename.mzXML > $filename.txt";
 
