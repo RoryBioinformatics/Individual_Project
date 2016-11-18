@@ -177,6 +177,7 @@ while (<TXT>){
 		}
 	}
 }
+
 # Prints peaks on command line. Also reverses hash for later use.
 my %reverse_peak = reverse %peak_intensities;
 my @k = keys %peak_intensities;
@@ -205,8 +206,8 @@ while (<mzXML>){
 	if ($_ =~ m/highMz="(\d+)"/){$highMz = $1;}
 	if ($_ =~ m/value="(\w+\s?\w+)"\S{1}><msIonisation/){$machine = $1;}
 	if ($_ =~ m/peaksCount="(\d+)"/){$peakCount = $1;}
-
 }
+
 # Enters peak information into the file
 print PEAK "# $mday/$mon/$year- $hour:$min:$sec\n# $company: $machine\n# M/Z range: $lowMz-$highMz.\n# Peak Count- $peakCount\n# $filename Centroid Peaks data [Charged]\n# Chosen M/Z cutoff: $minimum - $maximum\n# Minimum distance between peaks: $dist\n# Peaks filtered at intensity of $intensity.\n";
 print PEAK "Peak Intensity,Peak m/z";
@@ -274,11 +275,20 @@ sub reduce {
 				}
 				last;
 			}
-			elsif ($chance < $dist){
+			elsif (($chance < $dist) && ($reverse_peak{$_} > $reverse_peak{$instance})){
 				push (@sublist, $instance);
  				if (($mzs == 1) && ($_ >= $minimum) && ($_ <= $maximum)){
 					push (@subtraction, $_);
 				}
+			}
+			elsif (($chance < $dist) && ($reverse_peak{$instance} > $reverse_peak{$_})){
+				push (@sublist, $_);
+				shift @mzs;
+				unshift (@mzs, $instance);
+ 				if (($mzs == 1) && ($_ >= $minimum) && ($_ <= $maximum)){
+					push (@subtraction, $_);
+				}
+				last;
 			}
 		}		
 	}
