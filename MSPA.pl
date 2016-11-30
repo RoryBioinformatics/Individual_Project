@@ -26,20 +26,28 @@ my $tab5 = $book->add( "Sheet 6", -label=>"Discovery and Analysis");
 # Text box to describe function of the program and provide links to github etc.
 my $update = "Ready.";
 my $starttime;
-my $Timestart = $tab->Label(-textvariable=>\$starttime )->pack();
+my $Timestart = $tab->Label(-textvariable=>\$starttime )->pack(-side=>'top');
 my $text1 = $tab->Label(-text=>('This is the Metabolite Statistical Processing App.'))->pack();
-my $text2 = $tab->Label(-text=>('The MSPA utilises a statistical pathway that initially removes any rows of the dataset where the number of zeros within the given row are above the supplied cutoff.
-A secondary step applies null values to any values that are above the chosen standard deviation from the mean.
-A third step normalises the data in a ranked inverse normalised transformation. 
-Finally, a modelling step is included, allowing both logistic regression and linear modelling.
-A visualisation tab of the P and Q values of the model and their distribution is also included.
-Generated files are stored within the initial directory of launch of the MPSA.
+my $text2 = $tab->Label(-text=>('The MSPA utilises a statistical pathway that initially removes any rows of the dataset where the number of zeros
 
+within the given row are above the supplied cutoff. A secondary step applies null values to any values
+
+that are above the chosen standard deviation from the mean. A third step normalises the data in
+
+a ranked inverse normalised transformation. Finally, a modelling step is included, allowing both logistic
+
+regression and linear modelling. A visualisation tab of the P and Q values of the model and their distribution
+
+is also included. Generated files are stored within the initial directory of launch of the MPSA.'), -background=> 'white', -relief=>'sunken')->pack(-fill=>'both', -expand=>1);
+
+my $text3 = $tab->Label(-text=>('
 To gain full functionality of the MPSA, R (and R package plyr) and perl modules Statistics::R and Tk require installation.
-The program also uses the pval_gui_processor.pl script, which is also available.
-For further information, please consult the MSPA readme file.
-'))->pack();
 
+The program also uses the pval_gui_processor.pl script, which is also available.
+
+For further information, please consult the MSPA readme file.
+
+If there are any issues with the program, please contact me via rorycunnison@yahoo.co.uk or via the Github account RoryBioinformatics.'), -background=> 'white', -relief=>'sunken')->pack(-fill=>'both', -expand=>1);
 
 # Pareto Removal
 # File input, SD cutoff entry and progress bar.
@@ -48,12 +56,12 @@ my $frame1 = $tab1 -> Frame();
 my $pareto_label = $frame1 -> Label(-text=> "The Pareto Removal widget allows for the removal of any rows within the
 dataset that have a number of zero values equal to or above the chosen parameter.");
 my $lab = $frame1 -> Label(-text=>"Find your file:   ");
-my $ent = $frame1 -> Entry(-width=>60);
+my $ent = $frame1 -> Entry(-background=> 'white',-width=>60);
 my $but2 = $frame1 -> Button(-text=>"Choose file", -command =>\&file_list_par);
 
 my $Zero_cutoff_label = $frame1 -> Label(-text=>'Minimum percentage of non zero values
 allowed (in decimal format):  ');
-my $Zero_cutoff_entry = $frame1 -> Entry();
+my $Zero_cutoff_entry = $frame1 -> Entry(-background=> 'white',);
 
 my $but3 = $frame1 -> Button(-text=>"Submit for Removal", -command =>\&pareto);
 my $progress = $frame1->ProgressBar(-width => 30, -height => 10, -from => 0, -to => 100, -blocks => 50, -colors => [0, 'green', 50, 'yellow' , 80, 'red'], -variable => \$percent_done, -relief=>'raised', -borderwidth=>2);
@@ -79,12 +87,12 @@ my $frame2 = $tab2 -> Frame();
 my $Outlier_label = $frame2 -> Label(-text=> "The Outlier Removal tool uses the given standard deviation to apply
 NA labels to both outliers (above or below the given SD) and zero values. Please ensure that rows are full or occupied by a numeric value in the dataset.");
 my $labOR = $frame2 -> Label(-text=>"Find your file:   ");
-my $entOR = $frame2 -> Entry(-width=>60, -textvariable=>\$file3);
+my $entOR = $frame2 -> Entry(-background=> 'white',-width=>60, -textvariable=>\$file3);
 my $but2OR = $frame2 -> Button(-text=>"Choose file", -command =>\&file_list_OR);
 
 my $SD_label = $frame2 -> Label(-text=>'Set the Standard Deviation
  from the mean cutoff:   ');
-my $SD_entry = $frame2 -> Entry();
+my $SD_entry = $frame2 -> Entry(-background=> 'white',);
 
 my $update1 = "Ready.";
 my $but3OR = $frame2 -> Button(-text=>"Submit for Removal", -command =>\&NA);
@@ -112,7 +120,7 @@ my $frame3 = $tab3 -> Frame();
 my $rINT_label = $frame3 -> Label(-text=> "The Rank Inverse Normalised Transformation tool normalises
 a dataset per row based on the deviation from the mean.");
 my $labRINT = $frame3 -> Label(-text=>"Find your file:   ");
-my $entRINT = $frame3 -> Entry(-width=>60, -textvariable=>\$file4);
+my $entRINT = $frame3 -> Entry(-background=> 'white',-width=>60, -textvariable=>\$file4);
 my $but2RINT = $frame3 -> Button(-text=>"Choose file", -command =>\&file_list_RINT);
 
 my $but3RINT = $frame3 -> Button(-text=>"Submit to Normalise", -command =>\&RINT);
@@ -139,11 +147,11 @@ my $frame4 = $tab4 -> Frame()->pack();
 my $mod_label = $frame4 -> Label(-text=> "The Model tool can be used to run a linear or logistic regression model of the dependent variable as a model of a number of independent variables.
 The tool requires the separation of variables measured and the independent metabolite variable into two tables to work. 
 Identifiers of the rows require re-addition from the previous step to the dataset.");
-my $labMOD = $frame4 -> Label(-text=>"Variable File:   ");
-my $entMOD = $frame4 -> Entry(-width=>60, -text=>"$file5");
+my $labMOD = $frame4 -> Label(-text=>"Metabolite File:   ");
+my $entMOD = $frame4 -> Entry(-background=> 'white',-width=>60, -text=>"$file5");
 my $but2MOD = $frame4 -> Button(-text=>"Choose file", -command =>\&file_list_MOD);
-my $labMOD_met = $frame4 -> Label(-text=>"Metabolite File:   ");
-my $entMOD_met = $frame4 -> Entry(-width=>60, -text=>"$file6");
+my $labMOD_met = $frame4 -> Label(-text=>"Variable File:   ");
+my $entMOD_met = $frame4 -> Entry(-background=> 'white',-width=>60, -text=>"$file6");
 my $but2MOD_met = $frame4 -> Button(-text=>"Choose file", -command =>\&file_list_MOD_met);
 my $frame5 = $tab4 -> Frame()->pack(-anchor=>'n', -side=>'bottom');
 my $model = 'Linear';
@@ -155,10 +163,10 @@ foreach(qw/Linear Logistic/){
 }
 
 my $DV_label = $frame5 -> Label(-text=>'Add dependent variable to model:');
-my $DV = $frame5 -> Entry(-width=>15);
+my $DV = $frame5 -> Entry(-background=> 'white',-width=>15);
 my $but_DV = $frame5 -> Button(-text=>"Submit", -command =>\&push_button_DV);
 my $IV_label = $frame5 -> Label(-text=>'Add independent variable to model:');
-my $IV = $frame5 -> Entry(-width=>15);
+my $IV = $frame5 -> Entry(-background=> 'white',-width=>15);
 my $but_IV = $frame5 -> Button(-text=>"Submit", -command =>\&IV_submit);
 my $model_rep = $frame5-> Label(-textvariable=>\$modvisual,-relief=>'ridge', -borderwidth=>2, -pady=>5, -padx=>5);
 my $cancel = $frame5 -> Button(-text=>"Clear Model", -command => \&Clear);
@@ -201,9 +209,9 @@ my $genent = $frm_gen -> Entry();
 my $genchoose = $frm_gen -> Button(-text=>"Choose file", -command=>\&file_list_DA);
 my $genbutton = $frm_gen -> Button(-text=>"Generate", -command=>\&generate_results);
 my $showbutton = $frm_gen -> Button(-text=>"Show Results", -command=>\&show_results);
-my $list = $frm_list -> Listbox(-width=>21, -height=>23);
-my $list2 = $frm_list -> Listbox(-width=>21, -height=>23);
-my $list3 = $frm_list -> Listbox(-width=>21, -height=>23);
+my $list = $frm_list -> Listbox(-background=> 'white',-width=>21, -height=>23);
+my $list2 = $frm_list -> Listbox(-background=> 'white',-width=>21, -height=>23);
+my $list3 = $frm_list -> Listbox(-background=> 'white',-width=>21, -height=>23);
 my @txtboxes = ($list, $list2, $list3);
 
 my $p_hist;
@@ -305,105 +313,11 @@ $filename = join ('/', @infile);
 my $infile = pop @infile;
 
 $R->startR;
-print "Reading file. ";
 $update = "Reading file.";
-# Read the dataframe into the R program
-$R->run("$infile <- read.csv('$filename', row.names=1)");
-print "Done.\n";
-
-print "\nChatting with R. ";
-$update = "Chatting with R.";
-# Uses plyr module for the counting function
-$R->run("library(plyr)");
-
-# Takes column and row data from the dataset and takes the file name into a scalar
-$R->run("a<-colnames($infile)");
-$R->run("a");
-my $colnames = $R->read;
-$R->run("b<-rownames($infile)");
-$R->run("b");
-my $rownames = $R->read;
-$R->run("length(a)");
-my $collength = $R->read;
-$R->run("length(b)");
-my $rowlength = $R->read;
-$R->run("myFile <-$infile");
-print "Done.";
-$update = "Done.";
-# Cuts the [1] response from R row length reads.
-my $lengthrow = reverse ($rowlength);
-chop $lengthrow;
-chop $lengthrow;
-chop $lengthrow;
-chop $lengthrow;
-$rowlength = reverse ($lengthrow);
-
-# Reads each row to determine amount of empty results in each (equal to 0)
-my $count = 0;
-my @rows = split (" ", $rownames);
-my @names;
-print "\nLearning names. ";
-$update = "Learning names.";
-foreach (@rows){
-	if ($_ =~ m/\d+_\d+/|| $_ =~ m/\d+.\d+m.z/|| $_ =~ m/\d+.\d+n/){
-		print $_;
-		push (@names, $_);
-	}
-}
-print "Done.\n";
-
-# Cuts the [1] response from R column length reads.
-my $lengthcol = reverse ($collength);
-chop $lengthcol;
-chop $lengthcol;
-chop $lengthcol;
-chop $lengthcol;
-$collength = reverse ($lengthcol);
-print "\nLocating Mop.\n";
+system "perl Data_cleaner_gui.pl $filename $infile $percentage";
 $update = "Cleaning.";
-while ($count < $rowlength){
-	my $freq = 0;
-	my $row = $names[$count];
-	print "$row\n";
-	$R->run("count(as.numeric(myFile [$row,]))");
-	my $countfunc = $R->read;
-	# Float search in the count function for values of 0.00 etc
-	if ($countfunc =~ m/1\s+0.0+\s+(\d+)/){
-		$freq = $1;
-		print ".";
-	}
-	# Int search for values of 0
-	elsif($countfunc =~ m/1\s+0\s+(\d+)/){
-		$freq = $1;
-		print ".";
-	}
-	elsif($countfunc =~ m/1\s+0.0{4,6}\w{1}\W{1}00\s+(\d+)/){
-		$freq = $1;
-		print ".";
-	}
-	my $rule = ($collength - $freq);
-	if (($rule/$collength) < $percentage||($rule/$collength) == 0){
-		$R->run("myFile <- data.frame(myFile[!rownames(myFile) %in% $row, ])");
-		print $row;
-	}
-	$count ++;
-	print $count;
-	for (my $i = $count; $i <= $rowlength; $i++) { 
-		$percent_done = ($i/$rowlength)*100;
-		$frame1 ->update;
-	}
-}
-
-chop $infile;
-chop $infile;
-chop $infile;
-chop $infile;
-print "\nData Polished!";
-$R->run("write.csv(myFile, file='$infile.clean.csv')");
-print "Finished!";
 $update = "File written- $infile.clean.csv.";
 $R->stopR;
-return;
 }
 
 
@@ -590,6 +504,7 @@ sub Model{
 	$R->run("write.csv(df, file='pval.$DVr.$infile.metab.csv')");
 	$update3 = "Complete. ";
 	print "Complete.\n";
+	$R -> stopR;
 	return;
 }
 
@@ -745,7 +660,7 @@ sub show_results{
 
 	# Searches array reference for Q values
 	foreach (@$frank){
-		if ($_ =~ m/(\d{1}.\d+)/ ){
+		if ($_ =~ m/(0.\d{7})/ ){
 			 push @franky, $1;
 		}
 	}
@@ -798,5 +713,6 @@ sub show_results{
 	$plot_lab = $frm_plot -> Label(-image=>$plot);
 	$plot_lab -> grid(-row=>1,-column=>1);
 	$frm_plot->update;
+	$R -> stopR;
 }
 
